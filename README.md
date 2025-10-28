@@ -85,8 +85,9 @@ ds
 *   **`Std_alboeggs`:** A 3-dimensional array with the shape (32, 76, 151), corresponding to the `Z1`, `latitude`, and `longitude` dimensions. It contains 367,232 data points of type `float32`. Standard deviation of mosquito (specifically *Aedes albopictus*) egg counts. 
 *   **`crs`:** Coordinate Reference System (CRS) of the data.
 
-## Run and build webapp locally
+### 3 Run and build webapp locally
 
+#### Local run and build 
 Install dependencies (assumes node.js is installed)
 
 ```shell
@@ -112,3 +113,7 @@ npx server
 ```
 
 This serves all the generated static files locally. Do not use `python3 -m http.server 8080` as it doesnt include all relevant mime types for wasm, relevant for maplibre! So the app will appear broken even though it isn't.
+
+#### Adding password for full version `index.html`
+
+
