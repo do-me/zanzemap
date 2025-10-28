@@ -1,0 +1,34 @@
+{
+  "name": "_webapp_build",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.0",
+    "@maplibre/maplibre-gl-geocoder": "^1.9.0",
+    "buffer": "^6.0.3",
+    "events": "^3.3.0",
+    "flatgeobuf": "^4.1.1",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
+    "maplibre-gl": "^5.6.2",
+    "plotly.js": "^3.1.0",
+    "stream-browserify": "^3.0.0",
+    "underscore": "^1.13.7",
+    "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "vite": "^7.1.3"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

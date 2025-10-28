@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.map-overlay {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.dark .legend-color {
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.slider-thumb::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1e3799; /* secondary */
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+.dark .slider-thumb::-webkit-slider-thumb {
+    background: #00bfff; /* accent */
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 5px solid #fff;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#map canvas {
+    border-radius: 8px;
+}
+
+.plot-container .main-svg {
+    border-radius: 8px;
+}
+
+/* Basemap button active state */
+.basemap-btn.active {
+    background-color: #0c2461; /* primary */
+    color: white;
+    border-color: #0c2461;
+}
+.dark .basemap-btn.active {
+    background-color: #00bfff; /* accent */
+    color: #0c2461;
+    border-color: #00bfff;
+}
+
+/* Ensure the table inside the data panel wraps text properly */
+#region-data table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#region-data table th, 
+#region-data table td {
+    word-wrap: break-word;
+}
+
+#play-pause-icon {
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Hide geocoder on mobile */
+@media (max-width: 1023px) {
+    .maplibregl-ctrl-geocoder {
+        display: none !important;
+    }
+}
+
+/* Show layer controls and legend in fullscreen mode */
+.maplibregl-map:-webkit-full-screen .absolute.top-4.left-4,
+.maplibregl-map:-moz-full-screen .absolute.top-4.left-4,
+.maplibregl-map:fullscreen .absolute.top-4.left-4 {
+    display: flex !important;
+    z-index: 2147483647 !important;
+}
+
+/* Ensure all child elements in the controls container are visible in fullscreen */
+.maplibregl-map:-webkit-full-screen .absolute.top-4.left-4 > *,
+.maplibregl-map:-moz-full-screen .absolute.top-4.left-4 > *,
+.maplibregl-map:fullscreen .absolute.top-4.left-4 > * {
+    display: block !important;
+    z-index: 2147483647 !important;
+}

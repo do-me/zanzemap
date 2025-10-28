@@ -1,0 +1,8 @@
+# requirements.txt
+
+geopandas
+pandas
+xarray[complete]
+numpy
+shapely
+ipykernel

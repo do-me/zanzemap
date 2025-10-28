@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- `dark` class will be toggled here -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mosquito Activity Trentino</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦟</text></svg>">
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col">
+    <!-- Loading overlay -->
+    <div id="loadingOverlay"
+        class="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50 text-white">
+        <div class="spinner"></div>
+        <div class="mt-4 text-xl">Loading map & data...</div>
+    </div>
+
+    <!-- Main layout container: changed to flex-col on mobile/tablet, flex-row on lg+ -->
+    <div class="flex flex-1 flex-col lg:flex-row overflow-hidden">
+        <!-- Sidebar (Infos) - this will be `order-last` on mobile/tablet, `lg:order-first` on desktop. -->
+        <!-- On mobile/tablet, it will be full width and visible, flowing after the main content. -->
+        <div id="sidebar"
+            class="sidebar w-full lg:w-96 bg-white dark:bg-gray-800 p-6 shadow-xl flex flex-col z-40 rounded-lg order-last lg:order-first">
+            <!-- Main title in sidebar: hide on mobile/tablet to avoid duplication with the main header -->
+            <div class="flex justify-between items-center mb-6 hidden lg:flex">
+                <h1 class="text-2xl font-bold text-primary dark:text-blue-300">Mosquito Activity</h1>
+                <button hidden id="toggleSidebar"
+                    class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+
+            <p class="text-gray-600 dark:text-gray-400 mb-6 hidden lg:block">Mosquito Activities for Regions and
+                Municipalities</p>
+
+            <div class="bg-blue-50 dark:bg-gray-700 rounded-xl p-4 mb-6">
+                <h3 class="font-bold text-primary dark:text-blue-300 mb-3 flex items-center gap-2">
+                    <i class="fas fa-info-circle"></i> About This Application
+                </h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">This interactive dashboard visualizes weekly
+                    mosquito activity data across Italy. The system helps public health officials and researchers track
+                    mosquito activity patterns to better predict and prevent disease outbreaks.</p>
+                <p class="text-sm text-gray-700 dark:text-gray-300">The data represents mosquito egg count
+                    probabilities, with higher values indicating greater mosquito activity. Data is collected weekly
+                    from April to November.</p>
+            </div>
+
+            <h2 class="font-bold text-lg text-primary dark:text-blue-300 mb-4 flex items-center gap-2">
+                <i class="fas fa-layer-group"></i> Data Visualization
+            </h2>
+            <p class="text-sm mb-4">Use the map to explore mosquito activity across regions:</p>
+            <ul class="list-disc pl-5 text-sm mb-6 space-y-1 text-gray-600 dark:text-gray-400">
+                <li>Select a thematic layer to display on the map.</li>
+                <li>Adjust the timeline slider to see weekly changes for the mosquito layer.</li>
+                <li>Click on any region to view its detailed time series data.</li>
+            </ul>
+
+            <div>
+                <h2 class="font-bold text-lg text-primary dark:text-blue-300 mb-4 flex items-center gap-2">
+                    <i class="fas fa-chart-line"></i> How to Use
+                </h2>
+                <p class="text-sm mb-2"><strong>Interactive Chart:</strong> The chart at the bottom shows time series
+                    data. Click on any region on the map to see its specific data.</p>
+                <p class="text-sm"><strong>Data Selection:</strong></p>
+                <ul class="list-disc pl-5 text-sm mt-2 space-y-1 text-gray-600 dark:text-gray-400">
+                    <li><i class="fas fa-mouse-pointer mr-1"></i> Single region: Click on a polygon</li>
+                    <li><i class="fas fa-globe-europe mr-1"></i> All regions: Reset selection</li>
+                </ul>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <h2 class="font-bold text-lg text-primary dark:text-blue-300 mb-3 flex items-center gap-2">
+                    <i class="fas fa-code"></i> Built by
+                </h2>
+                <!-- Logo Component -->
+                 <a href="https://geo.rocks" target="_blank" rel="noopener noreferrer"
+                    class="block hover:opacity-80 transition-opacity duration-200">
+                    <img src="/logos/geo_rocks_logo_long.jpeg" alt="Web Page Creator: Dominik Weckmüller (https://geo.rocks)">
+                </a>
+                <br>
+                <p class="text-sm">Copyright © 2025 Dominik Weckmüller. All rights reserved.</p>
+            </div>
+        </div>
+
+        <!-- Main content area (Header, Map, Timeline, Chart, Table) -->
+        <!-- This will be `order-first` on mobile/tablet, `lg:order-last` on desktop. -->
+        <div class="flex-1 flex flex-col overflow-hidden order-first lg:order-last">
+            <!-- Mobile-only header -->
+            <div class="lg:hidden p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <h1 class="text-2xl font-bold text-primary dark:text-blue-300 mb-2">Mosquito Activity</h1>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Mosquito Activities for Regions and Municipalities in Trentino</p>
+            </div>
+            
+            <div class="flex-1 flex flex-col lg:flex-row p-4 gap-4">
+                <div class="flex-1 flex flex-col">
+                    <!-- Map -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-4">
+                        <h3 class="font-bold text-primary dark:text-blue-300 mb-3">
+                            <i class="fas fa-map"></i> Map
+                        </h3>
+
+                        <div class="relative rounded-lg overflow-hidden" style="height: 60vh;">
+                            <!-- Map element, corrected to fill the container -->
+                            <div id="map" class="absolute inset-0 rounded-lg" style="height: 100%;"></div>
+
+                            <!-- Single container for all overlay elements, positioned in the top-left -->
+                            <div class="absolute top-4 left-4 z-10 flex flex-col gap-4 w-52">
+
+                                <!-- Map Controls: Basemap & Layers -->
+                                <div class="bg-white/90 dark:bg-gray-800/90 rounded-lg shadow p-3 backdrop-blur-sm">
+                                    <div class="flex flex-col gap-3">
+                                        <div>
+                                            <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors" onclick="toggleLayerGroup('basemap-group')">
+                                                <span class="flex items-center gap-2">
+                                                    <i class="fas fa-map"></i> Basemap
+                                                </span>
+                                                <i id="basemap-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
+                                            </button>
+                                            <div id="basemap-group" class="flex gap-2">
+                                                <button
+                                                    class="basemap-btn flex-1 py-1 px-2 bg-gray-100 dark:bg-gray-700 rounded-md text-xs border border-gray-300 dark:border-gray-600 active"
+                                                    data-style="street">Street</button>
+                                                <button
+                                                    class="basemap-btn flex-1 py-1 px-2 bg-gray-100 dark:bg-gray-700 rounded-md text-xs border border-gray-300 dark:border-gray-600"
+                                                    data-style="satellite">Satellite</button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors" onclick="toggleLayerGroup('thematic-layer-group')">
+                                                <span class="flex items-center gap-2">
+                                                    <i class="fas fa-filter"></i> Thematic Layer
+                                                </span>
+                                                <i id="thematic-layer-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
+                                            </button>
+                                            <div id="thematic-layer-group" class="space-y-2">
+                                                <!-- 5-Year Average (2020-2024) Group -->
+                                                <div>
+                                                    <button type="button" class="w-full flex items-center justify-between text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide hover:text-gray-800 dark:hover:text-gray-200 transition-colors" onclick="toggleLayerGroup('average-group')">
+                                                        <span>2020-2024 Average</span>
+                                                        <i id="average-group-icon" class="fas fa-chevron-right transform transition-transform"></i>
+                                                    </button>
+                                                    <div id="average-group" class="space-y-1.5 pl-2 hidden">
+                                                        <div class="flex items-center">
+                                                            <input type="radio" id="mosquito-radio" name="thematic-layer"
+                                                                value="mosquito" class="mr-2">
+                                                            <label for="mosquito-radio" class="text-sm">Grid</label>
+                                                        </div>
+                                                        <div class="flex items-center">
+                                                            <input type="radio" id="nuts-radio" name="thematic-layer"
+                                                                value="nuts" class="mr-2">
+                                                            <label for="nuts-radio" class="text-sm">Regions (NUTS3)</label>
+                                                        </div>
+                                                        <div class="flex items-center">
+                                                            <input type="radio" id="commune-radio" name="thematic-layer"
+                                                                value="commune" class="mr-2">
+                                                            <label for="commune-radio" class="text-sm">Municipalities</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- 2025 Forecast Group -->
+                                                <div>
+                                                    <button type="button" class="w-full flex items-center justify-between text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide hover:text-gray-800 dark:hover:text-gray-200 transition-colors" onclick="toggleLayerGroup('forecast-group')">
+                                                        <span>2025 Forecast</span>
+                                                        <i id="forecast-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
+                                                    </button>
+                                                    <div id="forecast-group" class="space-y-1.5 pl-2">
+                                                        <div class="flex items-center">
+                                                            <input type="radio" id="mosquito-2025-radio" name="thematic-layer"
+                                                                value="mosquito_2025" class="mr-2">
+                                                            <label for="mosquito-2025-radio" class="text-sm">Grid</label>
+                                                        </div>
+                                                        <div class="flex items-center">
+                                                            <input type="radio" id="nuts-2025-radio" name="thematic-layer"
+                                                                value="nuts_2025" class="mr-2" checked>
+                                                            <label for="nuts-2025-radio" class="text-sm">Regions (NUTS3)</label>
+                                                        </div>
+                                                        <div class="flex items-center">
+                                                            <input type="radio" id="commune-2025-radio" name="thematic-layer"
+                                                                value="commune_2025" class="mr-2">
+                                                            <label for="commune-2025-radio" class="text-sm">Municipalities</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button id="reset-selection"
+                                            class="w-full py-2 px-3 bg-primary text-white rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-blue-900 dark:hover:bg-secondary"
+                                            title="Reset selection">
+                                            <i class="fas fa-globe-europe"></i> Reset Selection
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Legend -->
+                                <div class="bg-white/90 dark:bg-gray-800/90 rounded-lg shadow p-3 backdrop-blur-sm">
+                                    <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-2 text-base hover:text-blue-900 dark:hover:text-blue-200 transition-colors" onclick="toggleLayerGroup('legend-group')">
+                                        <span class="flex items-center gap-2">
+                                            <i class="fas fa-map-marked-alt"></i> Activity Index
+                                        </span>
+                                        <i id="legend-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
+                                    </button>
+                                    <div id="legend-group" class="space-y-1">
+                                        <div id="map-legend-content" class="space-y-1"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slider container -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold text-primary dark:text-blue-300 flex items-center gap-2">
+                                <i class="fas fa-calendar-week"></i> Timeline Selection
+                            </h3>
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="bg-blue-100 dark:bg-gray-700 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">
+                                    Week: <span id="week-value">15</span> | <span id="month-display">April</span>
+                                </div>
+                                <button id="play-pause-button"
+                                    class="bg-primary hover:bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center"
+                                    title="Play Animation">
+                                    <i id="play-pause-icon" class="fas fa-play"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <input id="week-slider" type="range" min="15" max="45" step="1" value="15"
+                            class="w-full h-2 bg-blue-100 dark:bg-gray-700 rounded slider-thumb">
+                        <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-2">
+                            <span>April</span><span>May</span><span>June</span><span>July</span><span>August</span><span>September</span><span>October</span><span>November</span>
+                        </div>
+                    </div>
+
+                    <!-- Chart container -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 h-[32vh]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 id="chart-title"
+                                class="font-bold text-primary dark:text-blue-300 flex items-center gap-2"></h3>
+                            <button hidden id="toggleChart"
+                                class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div id="timeseries-chart" class="h-64"></div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/3 flex flex-col gap-4">
+                    <!-- Controls -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                        <div class="flex items-center justify-end gap-4">
+                            <button id="toggleTheme"
+                                class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 px-3 rounded-lg flex items-center gap-2">
+                                <i class="fas fa-moon"></i>
+                                <span class="sr-only">Toggle Dark Mode</span>
+                            </button>
+                            <button id="downloadButton"
+                                class="bg-primary hover:bg-blue-900 text-white py-2 px-4 rounded-lg flex items-center gap-2">
+                                <i class="fas fa-file-pdf"></i> Generate Report
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Table Data -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex flex-col flex-1">
+                        <h3 class="font-bold text-primary dark:text-blue-300 mb-4 flex items-center gap-2">
+                            <i class="fas fa-table"></i> Table Data
+                        </h3>
+                        <div id="region-data" class="flex-1 overflow-y-auto">
+                            <!-- Content generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
