@@ -5,12 +5,9 @@ See LICENSE.md for licensing conditions.
 
 ## Data updates with Python scripts 
 
-**tl;dr: Just update this file `data_processing/data/in_updatable/albo_alpine_ML_Standardised_MeanSpatPred.nc` and run `uv run --python 3.12 --with-requirements requirements.txt process_netcdf_layers.py` (<30 seconds).<br>
-Then copy all the files from directory `public/data/out` that end on `_2025` to `https://zanzemap.it/`.**
-
-Detailed explanation:
-
 ### 1. Update the file 
+
+Clone this repo with `git clone https://github.com/do-me/zanzemap.git` or simply download it via the browser. 
 
 Just overwrite this file `data_processing/data/in_updatable/albo_alpine_ML_Standardised_MeanSpatPred.nc` with the new one. Keep the same name.
 
@@ -114,6 +111,4 @@ npx server
 
 This serves all the generated static files locally. Do not use `python3 -m http.server 8080` as it doesnt include all relevant mime types for wasm, relevant for maplibre! So the app will appear broken even though it isn't.
 
-#### Adding password for full version `index.html`
-
-
+The password `zanze2025` for staticrypt is defined in the build script in package.json.
