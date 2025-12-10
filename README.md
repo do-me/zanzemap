@@ -3,6 +3,12 @@
 Mosquito map developed for Fondazione Edmund Mach, displayed on https://www.zanzemap.it/.
 See LICENSE.md for licensing conditions.
 
+The light version with basic controls only: 
+<img width="1264" height="1024" alt="image" src="https://github.com/user-attachments/assets/1d1047fc-bdde-46f5-bf7c-796b8b240de8" />
+
+The full version with all features: 
+<img width="1988" height="1317" alt="image" src="https://github.com/user-attachments/assets/6b789950-c718-4867-bb66-239775fd298d" />
+
 ## Data updates with Python scripts 
 
 ### 1. Update the file 
