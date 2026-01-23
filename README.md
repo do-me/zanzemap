@@ -19,13 +19,17 @@ Just overwrite this file `data_processing/data/in_updatable/albo_alpine_ML_Stand
 
 ### 2. Run the script 
 
-Install uv: https://docs.astral.sh/uv/getting-started/installation/#installing-uv.
+- Install uv: https://docs.astral.sh/uv/getting-started/installation/#installing-uv.
 
+- Change the directory in your terminal from the root directory to data_processing with: `cd data_processing`
+
+- Then run this command to execute the script:
+- 
 ```python
 uv run --python 3.12 --with-requirements requirements.txt process_netcdf_layers.py
 ```
 
-First run will take a minute depending on your internet speed. Following runs will be much faster as the dependencies are cached.
+First run will take a minute depending on your internet speed. Following runs will be much faster (10-20s) as the dependencies are cached.
 
 ### 3. Copy outputs
 
