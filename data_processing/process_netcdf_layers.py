@@ -35,7 +35,7 @@ ds = xr.open_dataset("data/in_updatable/albo_alpine_ML_Standardised_MeanSpatPred
 
 
 crs = "EPSG:4326"
-da = ds["Std_alboeggs"]  # dims: (Z1, latitude, longitude)
+da = ds["Std_alboeggs"]  # dims: (time, latitude, longitude)
 
 lons = ds["longitude"].values
 lats = ds["latitude"].values
@@ -67,7 +67,7 @@ for lat_i, lat in enumerate(lats):
         # Timeseries for this cell
         series = da[:, lat_i, lon_i].values
         ts_dict = {str(int(z)): (None if np.isnan(v) else float(v)) 
-                   for z, v in zip(ds["Z1"].values, series)}
+                   for z, v in zip(ds["time"].values, series)}
 
         # Only keep if at least one value is not None
         if any(v is not None for v in ts_dict.values()):
