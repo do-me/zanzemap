@@ -6,3 +6,5 @@ xarray[complete]
 numpy
 shapely
 ipykernel
+netcdf4
+h5netcdf
