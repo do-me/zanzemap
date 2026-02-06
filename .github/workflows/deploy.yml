@@ -38,9 +38,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          # The package-lock.json was updated to include linux binaries
-          npm install --include=optional
+        run: npm install --include=optional
 
       - name: Build
         run: npm run build
