@@ -33,9 +33,22 @@ ds = xr.open_dataset("data/in_updatable/albo_alpine_ML_Standardised_MeanSpatPred
 
 # In[10]:
 
-
 crs = "EPSG:4326"
-da = ds["Std_alboeggs"]  # dims: (time, latitude, longitude)
+da = ds["Std_alboeggs"]  # dims: (time/Z1, latitude, longitude)
+
+# --- STANDARDISATION LOGIC START ---
+# Determine which time dimension is present and create a standardized list of keys (e.g., 1, 2... 52)
+if "time" in ds.coords:
+    print("Detected 'time' coordinate (datetime). Converting to week numbers.")
+    # Extract ISO week numbers from datetimes (returns integers 1-52/53)
+    # We use .values to get a numpy array for speed in the loop
+    time_keys = ds["time"].dt.isocalendar().week.values
+elif "Z1" in ds.coords:
+    print("Detected 'Z1' coordinate (integer). Using values directly.")
+    time_keys = ds["Z1"].values
+else:
+    raise ValueError("Dataset dimensions must contain either 'time' or 'Z1'")
+# --- STANDARDISATION LOGIC END ---
 
 lons = ds["longitude"].values
 lats = ds["latitude"].values
@@ -65,9 +78,12 @@ for lat_i, lat in enumerate(lats):
         ])
 
         # Timeseries for this cell
+        # We use positional indexing [:, lat, lon] which works for both (time,...) and (Z1,...)
         series = da[:, lat_i, lon_i].values
+        
+        # Use the pre-calculated time_keys here instead of ds["time"]
         ts_dict = {str(int(z)): (None if np.isnan(v) else float(v)) 
-                   for z, v in zip(ds["time"].values, series)}
+                   for z, v in zip(time_keys, series)}
 
         # Only keep if at least one value is not None
         if any(v is not None for v in ts_dict.values()):
@@ -107,9 +123,6 @@ gdf["study_area_extent_trentino"] = gdf.intersects(clip_geom)
 #############################################
 
 gdf.to_file("../public/data/out/model_output_trentino_2025.fgb")
-gdf
-
-# should run in a few seconds!
 
 
 # ## 2 NUTS3 processing
