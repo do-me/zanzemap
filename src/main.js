@@ -35,12 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- CACHING VARIABLES ---
     const layerCaches = {
-        mosquito: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data', fgbPath: '/data/out/model_output_trentino.fgb', moveHandler: null },
-        nuts: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions', fgbPath: '/data/out/EU_NUTS3_01M.fgb', moveHandler: null },
-        commune: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes', fgbPath: '/data/out/IT_comuni.fgb', moveHandler: null },
-        mosquito_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data-2025', fgbPath: '/data/out/model_output_trentino_2025.fgb', moveHandler: null },
-        nuts_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions-2025', fgbPath: '/data/out/EU_NUTS3_01M_2025.fgb', moveHandler: null },
-        commune_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes-2025', fgbPath: '/data/out/IT_comuni_2025.fgb', moveHandler: null },
+        mosquito: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data', fgbPath: 'data/out/model_output_trentino.fgb', moveHandler: null },
+        nuts: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions', fgbPath: 'data/out/EU_NUTS3_01M.fgb', moveHandler: null },
+        commune: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes', fgbPath: 'data/out/IT_comuni.fgb', moveHandler: null },
+        mosquito_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data-2025', fgbPath: 'data/out/model_output_trentino_2025.fgb', moveHandler: null },
+        nuts_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions-2025', fgbPath: 'data/out/EU_NUTS3_01M_2025.fgb', moveHandler: null },
+        commune_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes-2025', fgbPath: 'data/out/IT_comuni_2025.fgb', moveHandler: null },
     };
 
     // --- HELPER FUNCTIONS ---
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const name = feature.properties.name;
                 // Skip if we already have this feature
                 if (!name || cache.features.has(name)) continue;
-                
+
                 // In limited version, only include features where study_area_extent_trentino is true
                 const isLimitedVersion = window.APP_CONFIG?.isLimitedVersion === true;
                 const isForecastLayer = layerType.includes('_2025');
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             feature.properties.timeseries = {};
                         }
                     }
-                    
+
                     // Set all timeseries values to null for features outside the study area
                     if (feature.properties.timeseries && typeof feature.properties.timeseries === 'object') {
                         for (const week in feature.properties.timeseries) {
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
                 }
-                
+
                 const parsedFeature = _parseFeatureProperties(feature);
                 cache.features.set(name, parsedFeature);
                 newFeatures.push(parsedFeature);
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cache.totalLoadedBounds = unionBboxes(cache.totalLoadedBounds, currentBbox);
         });
     }
-    
+
     async function loadAllBasemaps() {
         const streetStyle = map.getStyle();
         allBasemapLayerIds.street = streetStyle.layers.map(l => l.id);
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
         map.addLayer({ id: 'mosquito-layer', type: 'fill', source: layerCaches.mosquito.sourceId, layout: { visibility: 'none' }, paint: { 'fill-color': probabilityPaint, 'fill-opacity': 0.75, 'fill-outline-color': 'rgba(0,0,0,0.2)' } });
         map.addLayer({ id: 'nuts-layer', type: 'fill', source: layerCaches.nuts.sourceId, layout: { visibility: 'none' }, paint: { 'fill-color': probabilityPaint, 'fill-opacity': 0.75, 'fill-outline-color': '#0c2461' } });
         map.addLayer({ id: 'commune-layer', type: 'fill', source: layerCaches.commune.sourceId, layout: { visibility: 'none' }, paint: { 'fill-color': probabilityPaint, 'fill-opacity': 0.75, 'fill-outline-color': '#8e44ad' } });
-        
+
         // Add new 2025 layers
         map.addLayer({ id: 'mosquito_2025-layer', type: 'fill', source: layerCaches.mosquito_2025.sourceId, layout: { visibility: 'none' }, paint: { 'fill-color': probabilityPaint, 'fill-opacity': 0.75, 'fill-outline-color': 'rgba(0,0,0,0.2)' } });
         map.addLayer({ id: 'nuts_2025-layer', type: 'fill', source: layerCaches.nuts_2025.sourceId, layout: { visibility: 'none' }, paint: { 'fill-color': probabilityPaint, 'fill-opacity': 0.75, 'fill-outline-color': '#0c2461' } });
@@ -231,12 +231,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const activeLayerType = document.querySelector('input[name="thematic-layer"]:checked').value;
         const is2025Forecast = activeLayerType.includes('_2025');
         const dataTypeText = is2025Forecast ? '2025 Forecast' : '2020-2024 Average';
-        
+
         const legendTitle = document.querySelector('#legend-group button span');
         if (legendTitle) {
             legendTitle.innerHTML = '<i class="fas fa-map-marked-alt"></i> Activity Index (' + dataTypeText + ')';
         }
-        
+
         legendContainer.innerHTML = '';
         [COLOR_SCALE[8], COLOR_SCALE[6], COLOR_SCALE[4], COLOR_SCALE[2]].forEach((color, index) => {
             const levelText = ['Very High (>75%)', 'High (50-75%)', 'Moderate (25-50%)', 'Low (<25%)'][index];
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const allValues = Object.values(feature.properties.timeseries || {}).filter(v => typeof v === 'number' && v !== null && v !== undefined);
             const currentValue = feature.properties.timeseries && feature.properties.timeseries[currentWeek];
             const hasCurrent = currentValue !== undefined && currentValue !== null;
-            
+
             props = {
                 current: hasCurrent ? currentValue : null,
                 peak: allValues.length > 0 ? Math.max(...allValues) : null,
@@ -315,11 +315,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let baseLayerData = null;
         const activeLayerType = document.querySelector('input[name="thematic-layer"]:checked').value;
         const is2025Forecast = activeLayerType.includes('_2025');
-        
+
         if (is2025Forecast) {
             const baseLayerType = activeLayerType.replace('_2025', '');
             const baseLayerFeatures = Array.from(layerCaches[baseLayerType].features.values());
-            
+
             if (baseLayerFeatures.length > 0) {
                 if (selectedFeatures.length > 0) {
                     const selectedFeatureName = selectedFeatures[0].properties.name || selectedFeatures[0].properties.region;
@@ -339,10 +339,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const weeks = Array.from({ length: 31 }, (_, i) => i + 15);
-        const tableHeaders = baseLayerData 
+        const tableHeaders = baseLayerData
             ? '<th class="p-1 text-center">Week</th><th class="p-1 text-center">2025 Forecast</th><th class="p-1 text-center">2020-2024 Avg</th><th class="p-1 text-center">Level</th>'
             : '<th class="p-1 text-center">Week</th><th class="p-1 text-center">Activity Index</th><th class="p-1 text-center">Level</th>';
-        
+
         regionDataEl.innerHTML = `
             <div class="p-4 bg-blue-50 dark:bg-gray-700/50 rounded-lg">
                 <h4 class="font-bold text-lg mb-3 text-primary dark:text-blue-300">${title}</h4>
@@ -354,29 +354,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="overflow-y-auto"><table class="w-full text-sm">
                     <thead><tr class="dark:bg-gray-900/50 sticky top-0">${tableHeaders}</tr></thead>
                     <tbody>${weeks.map(week => {
-                        const rawValue = timeseries && timeseries[week];
-                        const hasValue = rawValue !== undefined && rawValue !== null;
-                        const value = hasValue ? rawValue : 0;
-                        const level = hasValue ? getLevel(value) : { symbol: '-', color: '#000000' };
-                        const displayValue = hasValue ? `${(value * 100).toFixed(1)}%` : '-';
-                        const baseValue = baseLayerData && baseLayerData[week];
-                        const baseDisplayValue = baseValue !== undefined && baseValue !== null ? `${(baseValue * 100).toFixed(1)}%` : '-';
-                        
-                        if (baseLayerData) {
-                            return `<tr class="${week == currentWeek ? 'bg-blue-100 dark:bg-gray-700' : ''}">
+            const rawValue = timeseries && timeseries[week];
+            const hasValue = rawValue !== undefined && rawValue !== null;
+            const value = hasValue ? rawValue : 0;
+            const level = hasValue ? getLevel(value) : { symbol: '-', color: '#000000' };
+            const displayValue = hasValue ? `${(value * 100).toFixed(1)}%` : '-';
+            const baseValue = baseLayerData && baseLayerData[week];
+            const baseDisplayValue = baseValue !== undefined && baseValue !== null ? `${(baseValue * 100).toFixed(1)}%` : '-';
+
+            if (baseLayerData) {
+                return `<tr class="${week == currentWeek ? 'bg-blue-100 dark:bg-gray-700' : ''}">
                                 <td class="p-1 text-center">${week} (${weekToMonth[week]})</td>
                                 <td class="p-1 font-bold text-center">${displayValue}</td>
                                 <td class="p-1 font-bold text-center text-gray-600">${baseDisplayValue}</td>
                                 <td class="p-1 font-bold text-center" style="color: ${level.color};">${level.symbol}</td>
                             </tr>`;
-                        } else {
-                            return `<tr class="${week == currentWeek ? 'bg-blue-100 dark:bg-gray-700' : ''}">
+            } else {
+                return `<tr class="${week == currentWeek ? 'bg-blue-100 dark:bg-gray-700' : ''}">
                                 <td class="p-1 text-center">${week} (${weekToMonth[week]})</td>
                                 <td class="p-1 font-bold text-center">${displayValue}</td>
                                 <td class="p-1 font-bold text-center" style="color: ${level.color};">${level.symbol}</td>
                             </tr>`;
-                        }
-                    }).join('')}</tbody>
+            }
+        }).join('')}</tbody>
                 </table></div>
             </div>`;
     }
@@ -415,22 +415,22 @@ document.addEventListener('DOMContentLoaded', function () {
             const is2025Forecast = activeLayerType.includes('_2025');
             const dataTypeText = is2025Forecast ? '2025 Forecast' : '2020-2024 Average';
             chartTitle = `Activity Index: ${props.name || props.region || 'Selected Region'} (${dataTypeText})`;
-            
+
             const selectedData = weeks.map(week => ({
                 week: week,
                 value: props.timeseries && props.timeseries[week] !== undefined && props.timeseries[week] !== null ? props.timeseries[week] : null
             })).filter(d => d.value !== null);
-            
-            mainData = { 
-                x: selectedData.map(d => d.week), 
-                y: selectedData.map(d => d.value) 
+
+            mainData = {
+                x: selectedData.map(d => d.week),
+                y: selectedData.map(d => d.value)
             };
 
             traces.push({
                 x: mainData.x,
                 y: mainData.y.map(v => v * 100),
                 type: 'scatter', mode: 'lines+markers', name: props.name || 'Selected',
-                line: { color: '#1e3799', width: 2.5 }, 
+                line: { color: '#1e3799', width: 2.5 },
                 marker: { size: 6, color: '#1e3799' }
             });
 
@@ -473,12 +473,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const is2025Forecast = activeLayerType.includes('_2025');
             const dataTypeText = is2025Forecast ? '2025 Forecast' : '2020-2024 Average';
             chartTitle = `Activity Index: ${activeLayerLabel} (${dataTypeText})`;
-            
+
             const avgData = weeks.map(week => ({
                 week: week,
                 value: weeklyAverages[week] !== undefined && weeklyAverages[week] !== null && weeklyAverages[week] > 0 ? weeklyAverages[week] : null
             })).filter(d => d.value !== null);
-            
+
             mainData = { x: avgData.map(d => d.week), y: avgData.map(d => d.value) };
 
             traces.push({
@@ -503,8 +503,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const chartTitleEl = document.getElementById('chart-title');
-        if(chartTitleEl) chartTitleEl.innerHTML = `<i class="fas fa-chart-line mr-2"></i> ${chartTitle}`;
-        
+        if (chartTitleEl) chartTitleEl.innerHTML = `<i class="fas fa-chart-line mr-2"></i> ${chartTitle}`;
+
         const layout = {
             template: document.documentElement.classList.contains('dark') ? 'plotly_dark' : 'plotly_white',
             xaxis: { range: [14.5, 45.5], tickvals: weeks, title: { text: 'Calendar Week', standoff: 20 } },
@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const featureId = e.features[0].id;
         const activeLayerType = document.querySelector('input[name="thematic-layer"]:checked').value;
         const cache = layerCaches[activeLayerType];
-        
+
         selectedFeatures = [];
         for (const feature of cache.features.values()) {
             if (feature.id === featureId) {
@@ -532,7 +532,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         updateAllViews();
     }
-    
+
     async function toggleThematicLayer(layerType) {
         try {
             console.log(`Toggling to layer: ${layerType}`);
@@ -564,11 +564,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     otherCache.moveHandler = null;
                 }
             });
-            
+
             cache.moveHandler = _.throttle(() => updateGenericData(layerType, cache.fgbPath), 500);
             map.on('moveend', cache.moveHandler);
-            
-            selectedFeatures = []; 
+
+            selectedFeatures = [];
             updateAllViews();
         } catch (error) {
             console.error(`Error during toggleThematicLayer for "${layerType}":`, error);
@@ -607,7 +607,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 mapInstance.once('idle', () => {
                     try {
                         resolve(mapInstance.getCanvas().toDataURL('image/jpeg', 0.85));
-                    } catch (e) { reject(e); } 
+                    } catch (e) { reject(e); }
                     finally {
                         Object.assign(container.style, originalStyle);
                         mapInstance.resize();
@@ -637,9 +637,9 @@ document.addEventListener('DOMContentLoaded', function () {
             let yPos;
 
             const [vrtLogoData, femLogoData, iftamedEuLogoData, c3aLogoData, zanzeLogoData, geoRocksLogoData] = await Promise.all([
-                loadImageAsBase64('/logos/fondazione_vrt.png'), loadImageAsBase64('/logos/fondazione_edmund_mach.jpg'),
-                loadImageAsBase64('/logos/iftamed_eu.jpg'), loadImageAsBase64('/logos/c3a.png'),
-                loadImageAsBase64('/logos/logo-zanzemap-1024x320.png'), loadImageAsBase64('/logos/geo_rocks_logo.jpg')
+                loadImageAsBase64('logos/fondazione_vrt.png'), loadImageAsBase64('logos/fondazione_edmund_mach.jpg'),
+                loadImageAsBase64('logos/iftamed_eu.jpg'), loadImageAsBase64('logos/c3a.png'),
+                loadImageAsBase64('logos/logo-zanzemap-1024x320.png'), loadImageAsBase64('logos/geo_rocks_logo.jpg')
             ]);
             const logoUrls = { vrt: 'https://www.fondazionevrt.it/', fem: 'https://www.fmach.it/', iftamedEu: 'https://cri.fmach.it/Ricerca/Progetti/IFTAMED-Influence-of-Fluctuating-Temperatures-on-Aedes-invasive-Mosquitoes-Ecophysiology-and-Distribution#', c3a: 'https://www.c3a.org/', zanze: 'https://zanzemap.it/', geoRocks: 'https://geo.rocks/' };
 
@@ -655,7 +655,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 pdf.link(currentX, yPos, logo.width, logo.height, { url: logo.url });
                 currentX += logo.width + gap;
             });
-            
+
             yPos = 45;
             const zanzeWidth = 70, zanzeHeight = zanzeWidth / (zanzeLogoData.width / zanzeLogoData.height), zanzeX = pdfWidth / 2 - zanzeWidth / 2;
             pdf.addImage(zanzeLogoData.src, 'PNG', zanzeX, yPos, zanzeWidth, zanzeHeight);
@@ -688,10 +688,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const splitMapText = pdf.splitTextToSize(mapDescText, mapImgWidth);
             const mapDescHeight = (splitMapText.length * 4) + 4;
             let mapImgHeight = Math.min(mapImgWidth * (3 / 4), pdf.internal.pageSize.getHeight() - yPos - margin - mapDescHeight);
-            
+
             const mapImage = await captureMapImage(map, mapImgWidth, mapImgHeight);
             pdf.addImage(mapImage, 'PNG', margin, yPos, mapImgWidth, mapImgHeight);
-            
+
             const hexToRgb = (hex) => ({ r: parseInt(hex.slice(1, 3), 16), g: parseInt(hex.slice(3, 5), 16), b: parseInt(hex.slice(5, 7), 16) });
             const legendWidth = 38, legendX = margin + mapImgWidth - legendWidth - 2, legendY = yPos + 2, legendPadding = 3, titleHeight = 7, colorBoxSize = 4;
             const legendData = [{ color: COLOR_SCALE[8], text: 'Very High (>75%)' }, { color: COLOR_SCALE[6], text: 'High (50-75%)' }, { color: COLOR_SCALE[4], text: 'Moderate (25-50%)' }, { color: COLOR_SCALE[2], text: 'Low (<25%)' }];
@@ -719,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pdf.setFontSize(10).setTextColor(80, 80, 80).text(splitMapText, margin, yPos);
 
             const chartEl = document.getElementById('timeseries-chart');
-            if(chartEl) {
+            if (chartEl) {
                 pdf.addPage();
                 yPos = margin + 10;
                 const chartImage = await Plotly.toImage(chartEl, { format: 'jpeg', width: 1000, height: 450, jpeg_quality: 100 });
@@ -737,7 +737,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let tableData, baseLayerDataPDF = null;
                 const activeLayerType = document.querySelector('input[name="thematic-layer"]:checked').value;
                 const is2025Forecast = activeLayerType.includes('_2025');
-                
+
                 if (selectedFeatures.length > 0) {
                     tableData = selectedFeatures[0].properties.timeseries;
                     if (is2025Forecast) {
@@ -771,7 +771,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     return [week.toString(), weekToMonth[week] || '', displayValue, level];
                 });
-                autoTable(pdf, { head, body, startY: yPos, headStyles: { fillColor: [12, 36, 97], textColor: [255, 255, 255], fontStyle: 'bold' }, theme: 'grid',
+                autoTable(pdf, {
+                    head, body, startY: yPos, headStyles: { fillColor: [12, 36, 97], textColor: [255, 255, 255], fontStyle: 'bold' }, theme: 'grid',
                     didParseCell: (data) => {
                         const levelCol = baseLayerDataPDF ? 4 : 3;
                         if (data.column.index === levelCol && data.section === 'body') {
@@ -840,7 +841,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (themeToggle) themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
             updateAllViews();
         };
-        if(themeToggle) themeToggle.addEventListener('click', () => {
+        if (themeToggle) themeToggle.addEventListener('click', () => {
             const isDark = !document.documentElement.classList.contains('dark');
             localStorage.setItem('darkMode', isDark);
             applyTheme(isDark);
@@ -868,19 +869,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.querySelectorAll('input[name="thematic-layer"]').forEach(radio => {
             radio.addEventListener('change', async (e) => {
-                if(e.target.checked) await toggleThematicLayer(e.target.value);
+                if (e.target.checked) await toggleThematicLayer(e.target.value);
             });
         });
 
         const resetSelectionBtn = document.getElementById('reset-selection');
-        if(resetSelectionBtn) resetSelectionBtn.addEventListener('click', () => {
+        if (resetSelectionBtn) resetSelectionBtn.addEventListener('click', () => {
             selectedFeatures = [];
             updateAllViews();
         });
-        
+
         const downloadButton = document.getElementById('downloadButton');
         if (downloadButton) downloadButton.addEventListener('click', generateReport);
-        
+
         document.getElementById('play-pause-button').addEventListener('click', () => {
             const icon = document.getElementById('play-pause-icon');
             const slider = document.getElementById('week-slider');
@@ -900,7 +901,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    window.toggleLayerGroup = function(groupId) {
+    window.toggleLayerGroup = function (groupId) {
         const group = document.getElementById(groupId);
         const icon = document.getElementById(groupId + '-icon');
         if (!group || !icon) return;

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
+  base: './',
   // This handles the 'global is not defined' error
   define: {
     'global': 'self',
@@ -14,7 +15,7 @@ export default defineConfig({
       util: 'util',
     },
   },
-  
+
   build: {
     rollupOptions: {
       input: {
