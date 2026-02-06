@@ -7,8 +7,8 @@
     <title>Mosquito Activity Trentino (Map View)</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦟</text></svg>">
-  <script type="module" crossorigin src="/assets/main-C_hGIG6r.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/main-Cbicstoz.css">
+  <script type="module" crossorigin src="./assets/main-Dj_W7SqR.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-BKvcorG8.css">
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen flex flex-col overflow-hidden">
@@ -33,174 +33,198 @@
 
                 <!-- Single collapsible legend container -->
                 <div class="absolute top-4 left-4 z-10" style="max-width: 250px;">
-                <div class="bg-white/90 dark:bg-gray-800/90 rounded-lg shadow-lg backdrop-blur-sm overflow-hidden">
-                    <!-- Main legend header -->
-                    <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="toggleLayerGroup('main-legend')">
-                        <span class="flex items-center gap-2 text-lg">
-                            <i class="fas fa-layer-group"></i> Map Controls
-                        </span>
-                        <i id="main-legend-icon" class="fas fa-chevron-down transform transition-transform"></i>
-                    </button>
-                    
-                    <!-- Main legend content -->
-                    <div id="main-legend" class="space-y-1 p-3 pt-0">
-                        <!-- 1. Basemap Section -->
-                        <div class="pt-2">
-                            <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors" onclick="toggleLayerGroup('basemap-group')">
-                                <span class="flex items-center gap-2">
-                                    <i class="fas fa-map"></i> Basemap
-                                </span>
-                                <i id="basemap-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
-                            </button>
-                            <div id="basemap-group" class="flex gap-2 mb-3">
-                                <button
-                                    class="basemap-btn flex-1 py-2 px-2 bg-gray-100 dark:bg-gray-700 rounded-md text-xs border border-gray-300 dark:border-gray-600 active"
-                                    data-style="street">Street</button>
-                                <button
-                                    class="basemap-btn flex-1 py-2 px-2 bg-gray-100 dark:bg-gray-700 rounded-md text-xs border border-gray-300 dark:border-gray-600"
-                                    data-style="satellite">Satellite</button>
+                    <div class="bg-white/90 dark:bg-gray-800/90 rounded-lg shadow-lg backdrop-blur-sm overflow-hidden">
+                        <!-- Main legend header -->
+                        <button type="button"
+                            class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                            onclick="toggleLayerGroup('main-legend')">
+                            <span class="flex items-center gap-2 text-lg">
+                                <i class="fas fa-layer-group"></i> Map Controls
+                            </span>
+                            <i id="main-legend-icon" class="fas fa-chevron-down transform transition-transform"></i>
+                        </button>
+
+                        <!-- Main legend content -->
+                        <div id="main-legend" class="space-y-1 p-3 pt-0">
+                            <!-- 1. Basemap Section -->
+                            <div class="pt-2">
+                                <button type="button"
+                                    class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors"
+                                    onclick="toggleLayerGroup('basemap-group')">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fas fa-map"></i> Basemap
+                                    </span>
+                                    <i id="basemap-group-icon"
+                                        class="fas fa-chevron-down transform transition-transform"></i>
+                                </button>
+                                <div id="basemap-group" class="flex gap-2 mb-3">
+                                    <button
+                                        class="basemap-btn flex-1 py-2 px-2 bg-gray-100 dark:bg-gray-700 rounded-md text-xs border border-gray-300 dark:border-gray-600 active"
+                                        data-style="street">Street</button>
+                                    <button
+                                        class="basemap-btn flex-1 py-2 px-2 bg-gray-100 dark:bg-gray-700 rounded-md text-xs border border-gray-300 dark:border-gray-600"
+                                        data-style="satellite">Satellite</button>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- 2. Thematic Layer Section -->
-                        <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
-                            <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors" onclick="toggleLayerGroup('thematic-layer-group')">
-                                <span class="flex items-center gap-2">
-                                    <i class="fas fa-filter"></i> Thematic Layer
-                                </span>
-                                <i id="thematic-layer-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
-                            </button>
-                            <div id="thematic-layer-group" class="space-y-2 mb-3">
-                                <!-- 5-Year Average (2020-2024) Group -->
-                                <div>
-                                    <button type="button" class="w-full flex items-center justify-between text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide hover:text-gray-800 dark:hover:text-gray-200 transition-colors" onclick="toggleLayerGroup('average-group')">
-                                        <span>2020-2024 Average</span>
-                                        <i id="average-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
-                                    </button>
-                                    <div id="average-group" class="space-y-1.5 pl-2">
-                                        <div class="flex items-center">
-                                            <input type="radio" id="mosquito-radio" name="thematic-layer"
-                                                value="mosquito" class="mr-2">
-                                            <label for="mosquito-radio" class="text-sm">Grid</label>
+
+                            <!-- 2. Thematic Layer Section -->
+                            <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <button type="button"
+                                    class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors"
+                                    onclick="toggleLayerGroup('thematic-layer-group')">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fas fa-filter"></i> Thematic Layer
+                                    </span>
+                                    <i id="thematic-layer-group-icon"
+                                        class="fas fa-chevron-down transform transition-transform"></i>
+                                </button>
+                                <div id="thematic-layer-group" class="space-y-2 mb-3">
+                                    <!-- 5-Year Average (2020-2024) Group -->
+                                    <div>
+                                        <button type="button"
+                                            class="w-full flex items-center justify-between text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                                            onclick="toggleLayerGroup('average-group')">
+                                            <span>2020-2024 Average</span>
+                                            <i id="average-group-icon"
+                                                class="fas fa-chevron-down transform transition-transform"></i>
+                                        </button>
+                                        <div id="average-group" class="space-y-1.5 pl-2">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="mosquito-radio" name="thematic-layer"
+                                                    value="mosquito" class="mr-2">
+                                                <label for="mosquito-radio" class="text-sm">Grid</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="radio" id="nuts-radio" name="thematic-layer" value="nuts"
+                                                    class="mr-2">
+                                                <label for="nuts-radio" class="text-sm">Regions (NUTS3)</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="radio" id="commune-radio" name="thematic-layer"
+                                                    value="commune" class="mr-2">
+                                                <label for="commune-radio" class="text-sm">Municipalities</label>
+                                            </div>
                                         </div>
-                                        <div class="flex items-center">
-                                            <input type="radio" id="nuts-radio" name="thematic-layer"
-                                                value="nuts" class="mr-2">
-                                            <label for="nuts-radio" class="text-sm">Regions (NUTS3)</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input type="radio" id="commune-radio" name="thematic-layer"
-                                                value="commune" class="mr-2">
-                                            <label for="commune-radio" class="text-sm">Municipalities</label>
+                                    </div>
+
+                                    <!-- 2025 Forecast Group -->
+                                    <div>
+                                        <button type="button"
+                                            class="w-full flex items-center justify-between text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                                            onclick="toggleLayerGroup('forecast-group')">
+                                            <span>2025 Forecast</span>
+                                            <i id="forecast-group-icon"
+                                                class="fas fa-chevron-down transform transition-transform"></i>
+                                        </button>
+                                        <div id="forecast-group" class="space-y-1.5 pl-2">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="mosquito-2025-radio" name="thematic-layer"
+                                                    value="mosquito_2025" class="mr-2">
+                                                <label for="mosquito-2025-radio" class="text-sm">Grid</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="radio" id="nuts-2025-radio" name="thematic-layer"
+                                                    value="nuts_2025" class="mr-2" checked>
+                                                <label for="nuts-2025-radio" class="text-sm">Regions (NUTS3)</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="radio" id="commune-2025-radio" name="thematic-layer"
+                                                    value="commune_2025" class="mr-2">
+                                                <label for="commune-2025-radio" class="text-sm">Municipalities</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- 2025 Forecast Group -->
-                                <div>
-                                    <button type="button" class="w-full flex items-center justify-between text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide hover:text-gray-800 dark:hover:text-gray-200 transition-colors" onclick="toggleLayerGroup('forecast-group')">
-                                        <span>2025 Forecast</span>
-                                        <i id="forecast-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
+
+                                <div class="flex items-center justify-between gap-2 mt-2">
+                                    <button id="reset-selection"
+                                        class="flex-1 py-2 px-3 bg-primary text-white rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-blue-900 dark:hover:bg-secondary"
+                                        title="Reset selection">
+                                        <i class="fas fa-globe-europe"></i> Reset
                                     </button>
-                                    <div id="forecast-group" class="space-y-1.5 pl-2">
-                                        <div class="flex items-center">
-                                            <input type="radio" id="mosquito-2025-radio" name="thematic-layer"
-                                                value="mosquito_2025" class="mr-2">
-                                            <label for="mosquito-2025-radio" class="text-sm">Grid</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input type="radio" id="nuts-2025-radio" name="thematic-layer"
-                                                value="nuts_2025" class="mr-2" checked>
-                                            <label for="nuts-2025-radio" class="text-sm">Regions (NUTS3)</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input type="radio" id="commune-2025-radio" name="thematic-layer"
-                                                value="commune_2025" class="mr-2">
-                                            <label for="commune-2025-radio" class="text-sm">Municipalities</label>
-                                        </div>
-                                    </div>
+                                    <button id="toggleTheme"
+                                        class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 px-3 rounded-lg flex items-center">
+                                        <i class="fas fa-moon"></i>
+                                    </button>
                                 </div>
                             </div>
-                            
-                            <div class="flex items-center justify-between gap-2 mt-2">
-                                <button id="reset-selection"
-                                    class="flex-1 py-2 px-3 bg-primary text-white rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-blue-900 dark:hover:bg-secondary"
-                                    title="Reset selection">
-                                    <i class="fas fa-globe-europe"></i> Reset
+
+                            <!-- 3. Activity Index Section -->
+                            <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <button type="button"
+                                    class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors"
+                                    onclick="toggleLayerGroup('legend-group')">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fas fa-map-marked-alt"></i> Activity Index
+                                    </span>
+                                    <i id="legend-group-icon"
+                                        class="fas fa-chevron-down transform transition-transform"></i>
                                 </button>
-                                <button id="toggleTheme"
-                                    class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 py-2 px-3 rounded-lg flex items-center">
-                                    <i class="fas fa-moon"></i>
+                                <div id="legend-group" class="space-y-1 mb-3">
+                                    <div id="map-legend-content" class="space-y-1"></div>
+                                </div>
+                            </div>
+
+                            <!-- 4. Built by Section -->
+                            <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <button type="button"
+                                    class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors"
+                                    onclick="toggleLayerGroup('author-group')">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fas fa-code"></i> Built by
+                                    </span>
+                                    <i id="author-group-icon"
+                                        class="fas fa-chevron-down transform transition-transform"></i>
                                 </button>
-                            </div>
-                        </div>
-                        
-                        <!-- 3. Activity Index Section -->
-                        <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
-                            <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors" onclick="toggleLayerGroup('legend-group')">
-                                <span class="flex items-center gap-2">
-                                    <i class="fas fa-map-marked-alt"></i> Activity Index
-                                </span>
-                                <i id="legend-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
-                            </button>
-                            <div id="legend-group" class="space-y-1 mb-3">
-                                <div id="map-legend-content" class="space-y-1"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- 4. Built by Section -->
-                        <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
-                            <button type="button" class="w-full flex items-center justify-between font-bold text-primary dark:text-blue-300 mb-1.5 text-sm hover:text-blue-900 dark:hover:text-blue-200 transition-colors" onclick="toggleLayerGroup('author-group')">
-                                <span class="flex items-center gap-2">
-                                    <i class="fas fa-code"></i> Built by
-                                </span>
-                                <i id="author-group-icon" class="fas fa-chevron-down transform transition-transform"></i>
-                            </button>
-                            <div id="author-group" class="space-y-2">
-                                <a href="https://geo.rocks" target="_blank" rel="noopener noreferrer"
-                                class="block hover:opacity-80 transition-opacity duration-200">
-                                    <img src="/logos/geo_rocks_logo_long.jpeg" alt="Web Page Creator: Dominik Weckmüller (https://geo.rocks)" class="w-full h-auto rounded" style="max-width: 200px; margin: 0 auto; display: block;">
-                                </a>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">Copyright 2025 Dominik Weckmüller. All rights reserved.</p>
+                                <div id="author-group" class="space-y-2">
+                                    <a href="https://geo.rocks" target="_blank" rel="noopener noreferrer"
+                                        class="block hover:opacity-80 transition-opacity duration-200">
+                                        <img src="./logos/geo_rocks_logo_long.jpeg"
+                                            alt="Web Page Creator: Dominik Weckmüller (https://geo.rocks)"
+                                            class="w-full h-auto rounded"
+                                            style="max-width: 200px; margin: 0 auto; display: block;">
+                                    </a>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Copyright 2025 Dominik
+                                        Weckmüller. All rights reserved.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Slider container -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-primary dark:text-blue-300 flex items-center gap-2">
-                    <i class="fas fa-calendar-week"></i> Timeline Selection
-                </h3>
-                <div class="flex items-center gap-2">
-                    <div
-                        class="bg-blue-100 dark:bg-gray-700 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">
-                        Week: <span id="week-value">15</span> | <span id="month-display">April</span>
+            <!-- Slider container -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-primary dark:text-blue-300 flex items-center gap-2">
+                        <i class="fas fa-calendar-week"></i> Timeline Selection
+                    </h3>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="bg-blue-100 dark:bg-gray-700 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">
+                            Week: <span id="week-value">15</span> | <span id="month-display">April</span>
+                        </div>
+                        <button id="play-pause-button"
+                            class="bg-primary hover:bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center"
+                            title="Play Animation">
+                            <i id="play-pause-icon" class="fas fa-play"></i>
+                        </button>
                     </div>
-                    <button id="play-pause-button"
-                        class="bg-primary hover:bg-secondary text-white rounded-full w-8 h-8 flex items-center justify-center"
-                        title="Play Animation">
-                        <i id="play-pause-icon" class="fas fa-play"></i>
-                    </button>
+                </div>
+                <input id="week-slider" type="range" min="15" max="45" step="1" value="15"
+                    class="w-full h-2 bg-blue-100 dark:bg-gray-700 rounded slider-thumb">
+                <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-2">
+                    <span>April</span><span>May</span><span>June</span><span>July</span><span>August</span><span>September</span><span>October</span><span>November</span>
                 </div>
             </div>
-            <input id="week-slider" type="range" min="15" max="45" step="1" value="15"
-                class="w-full h-2 bg-blue-100 dark:bg-gray-700 rounded slider-thumb">
-            <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-2">
-                <span>April</span><span>May</span><span>June</span><span>July</span><span>August</span><span>September</span><span>October</span><span>November</span>
-            </div>
         </div>
-    </div>
 
-    <script>
-        // Configuration for the limited version
-        window.APP_CONFIG = {
-            isLimitedVersion: true
-        };
-    </script>
+        <script>
+            // Configuration for the limited version
+            window.APP_CONFIG = {
+                isLimitedVersion: true
+            };
+        </script>
 </body>
 
 </html>
