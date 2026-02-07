@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
-  base: './',
+  base: '/zanzemap/',
   // This handles the 'global is not defined' error
   define: {
     'global': 'self',

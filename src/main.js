@@ -35,12 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- CACHING VARIABLES ---
     const layerCaches = {
-        mosquito: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data', fgbPath: 'data/out/model_output_trentino.fgb', moveHandler: null },
-        nuts: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions', fgbPath: 'data/out/EU_NUTS3_01M.fgb', moveHandler: null },
-        commune: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes', fgbPath: 'data/out/IT_comuni.fgb', moveHandler: null },
-        mosquito_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data-2025', fgbPath: 'data/out/model_output_trentino_2025.fgb', moveHandler: null },
-        nuts_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions-2025', fgbPath: 'data/out/EU_NUTS3_01M_2025.fgb', moveHandler: null },
-        commune_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes-2025', fgbPath: 'data/out/IT_comuni_2025.fgb', moveHandler: null },
+        mosquito: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data', fgbPath: `${import.meta.env.BASE_URL}data/out/model_output_trentino.fgb`, moveHandler: null },
+        nuts: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions', fgbPath: `${import.meta.env.BASE_URL}data/out/EU_NUTS3_01M.fgb`, moveHandler: null },
+        commune: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes', fgbPath: `${import.meta.env.BASE_URL}data/out/IT_comuni.fgb`, moveHandler: null },
+        mosquito_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'mosquito-data-2025', fgbPath: `${import.meta.env.BASE_URL}data/out/model_output_trentino_2025.fgb`, moveHandler: null },
+        nuts_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'nuts-regions-2025', fgbPath: `${import.meta.env.BASE_URL}data/out/EU_NUTS3_01M_2025.fgb`, moveHandler: null },
+        commune_2025: { features: new Map(), totalLoadedBounds: null, sourceId: 'communes-2025', fgbPath: `${import.meta.env.BASE_URL}data/out/IT_comuni_2025.fgb`, moveHandler: null },
     };
 
     // --- HELPER FUNCTIONS ---
@@ -637,9 +637,9 @@ document.addEventListener('DOMContentLoaded', function () {
             let yPos;
 
             const [vrtLogoData, femLogoData, iftamedEuLogoData, c3aLogoData, zanzeLogoData, geoRocksLogoData] = await Promise.all([
-                loadImageAsBase64('logos/fondazione_vrt.png'), loadImageAsBase64('logos/fondazione_edmund_mach.jpg'),
-                loadImageAsBase64('logos/iftamed_eu.jpg'), loadImageAsBase64('logos/c3a.png'),
-                loadImageAsBase64('logos/logo-zanzemap-1024x320.png'), loadImageAsBase64('logos/geo_rocks_logo.jpg')
+                loadImageAsBase64(`${import.meta.env.BASE_URL}logos/fondazione_vrt.png`), loadImageAsBase64(`${import.meta.env.BASE_URL}logos/fondazione_edmund_mach.jpg`),
+                loadImageAsBase64(`${import.meta.env.BASE_URL}logos/iftamed_eu.jpg`), loadImageAsBase64(`${import.meta.env.BASE_URL}logos/c3a.png`),
+                loadImageAsBase64(`${import.meta.env.BASE_URL}logos/logo-zanzemap-1024x320.png`), loadImageAsBase64(`${import.meta.env.BASE_URL}logos/geo_rocks_logo.jpg`)
             ]);
             const logoUrls = { vrt: 'https://www.fondazionevrt.it/', fem: 'https://www.fmach.it/', iftamedEu: 'https://cri.fmach.it/Ricerca/Progetti/IFTAMED-Influence-of-Fluctuating-Temperatures-on-Aedes-invasive-Mosquitoes-Ecophysiology-and-Distribution#', c3a: 'https://www.c3a.org/', zanze: 'https://zanzemap.it/', geoRocks: 'https://geo.rocks/' };
 
